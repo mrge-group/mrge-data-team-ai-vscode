@@ -1,0 +1,24 @@
+{
+  "inputs": [
+    {
+      "id": "github-token",
+      "type": "promptString",
+      "description": "GitHub Personal Access Token",
+      "password": true
+    }
+  ],
+  "servers": {
+    "atlassian-mcp-server": {
+      "url": "https://mcp.atlassian.com/v1/mcp",
+      "type": "http"
+    },
+    "github-local": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "MRGE_GITHUB_PERSONAL_ACCESS_TOKEN": "${input:github-token}"
+      }
+    },
+  }
+}
