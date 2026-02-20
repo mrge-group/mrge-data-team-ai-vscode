@@ -1,6 +1,6 @@
-[submodule "de-etl-jobs"]
-	path = bi-airflow-dags
-	url = git@github.com:mrge-group/bi-airflow-dags.git
+[submodule "data-platform-etl"]
+	path = data-platform-etl
+	url = git@github.com:mrge-group/data-platform-etl.git
 	branch = main
 [submodule "data-platform"]
 	path = data-platform
@@ -14,7 +14,7 @@
 	path = data-platform-infra
 	url = git@github.com:mrge-group/data-platform-infra.git
 	branch = main
-[submodule "databricks-assets"]
-	path = databricks-assets
-	url = git@github.com:mrge-group/databricks-assets.git
+[submodule "bi-airflow-dags"]
+	path = bi-airflow-dags
+	url = git@github.com:mrge-group/bi-airflow-dags.git
 	branch = main
