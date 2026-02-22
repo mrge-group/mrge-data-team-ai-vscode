@@ -1,6 +1,30 @@
 # GitHub MCP — Code & Pull Requests
 
-**Server:** `github-local` — configured in `.vscode/mcp.json` with `@modelcontextprotocol/server-github` and token env var `MRGE_GITHUB_PERSONAL_ACCESS_TOKEN`.
+**Server:** `github-local` — configured in `.vscode/mcp.json` with `@modelcontextprotocol/server-github`.
+
+## Authentication Setup
+
+The GitHub MCP server requires a **Fine-grained Personal Access Token**:
+
+1. **Create token:** Go to https://github.com/settings/personal-access-tokens/new
+2. **Configure:**
+   - **Token name:** "MRGE Data Team MCP" (or similar)
+   - **Resource Owner:** "mrge-group"
+   - **Expiration:** Choose your preference (90 days, 1 year, etc.)
+   - **Repository access:** Select "All repositories"
+   - **Repository permissions:**
+     - **Read access to:** actions, attestations api, code, codespaces metadata, deployments, merge queues, metadata, pages, and repository hooks
+     - **Read and Write access to:** commit statuses, discussions, and pull requests
+3. **Generate token** and copy it
+4. **Set environment variable:**
+   ```bash
+   # Add to your ~/.zshrc or ~/.bashrc
+   export MRGE_GITHUB_PERSONAL_ACCESS_TOKEN="github_pat_..."
+   ```
+5. **Reload shell:** `exec $SHELL`
+6. **Reload VS Code:** (⌘⇧P → "Developer: Reload Window") for the MCP server to connect
+
+**Note:** The environment variable `MRGE_GITHUB_PERSONAL_ACCESS_TOKEN` is mapped to `GITHUB_PERSONAL_ACCESS_TOKEN` in the MCP configuration.
 
 ## Repositories in This Workspace
 

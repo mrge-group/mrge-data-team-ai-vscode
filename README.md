@@ -113,16 +113,47 @@ When VS Code opens, install these extensions if you don't have them already:
 
 - **GitHub Copilot** (`GitHub.copilot`)
 - **GitHub Copilot Chat** (`GitHub.copilot-chat`)
+- **dbt Power User** (`innoverio.vscode-dbt-power-user`) - dbt modeling, lineage, and documentation
+- **Markdown Preview Enhanced** (`shd101wyy.markdown-preview-enhanced`) - Enhanced markdown preview
+
+VS Code will automatically prompt you to install these when you open the workspace.
 
 ### 5. MCP servers (auto-configured)
 
 The workspace comes with pre-configured MCP servers in `.vscode/mcp.json`:
 
-| Server | What it does | Auth | Setup Required |
+| Server | What it does | Auth | Setup Instructions |
 |---|---|---|---|
-| **Atlassian** | Jira + Confluence access | Browser OAuth (auto-prompt) | None |
-| **GitHub** | Repository operations, PR/Issue management | Personal Access Token | Set `MRGE_GITHUB_PERSONAL_ACCESS_TOKEN` env var |
-| **Databricks** | SQL queries, Unity Catalog access | Token auth | Set `HOST_NAME` and `DATABRICKS_TOKEN` env vars |
+| **Atlassian** | Jira + Confluence access | Browser OAuth (auto-prompt) | None - authenticates on first use |
+| **GitHub** | Repository operations, PR/Issue management | Fine-grained PAT | See [GitHub MCP Setup](#github-mcp-setup) below |
+| **Databricks** | SQL queries, Unity Catalog access | Token auth | See [Databricks MCP Setup](#databricks-mcp-setup) below |
+
+#### GitHub MCP Setup
+
+The GitHub MCP server requires a **Fine-grained Personal Access Token**:
+
+1. **Create token:** Go to https://github.com/settings/personal-access-tokens/new
+2. **Configure:**
+   - **Token name:** "MRGE Data Team MCP" (or similar)
+   - **Resource Owner:** "mrge-group"
+   - **Expiration:** Choose your preference (90 days, 1 year, etc.)
+   - **Repository access:** Select "All repositories"
+   - **Repository permissions:**
+     - **Read access to:** actions, attestations api, code, codespaces metadata, deployments, merge queues, metadata, pages, and repository hooks
+     - **Read and Write access to:** commit statuses, discussions, and pull requests
+3. **Generate token** and copy it
+4. **Set environment variable:**
+   ```bash
+   # Add to your ~/.zshrc or ~/.bashrc
+   export MRGE_GITHUB_PERSONAL_ACCESS_TOKEN="github_pat_..."
+   ```
+5. **Reload shell:**
+   ```bash
+   exec $SHELL
+   ```
+6. **Reload VS Code:** (⌘⇧P → "Developer: Reload Window") for the MCP server to connect.
+
+**Important:** The MCP server expects the token in the `MRGE_GITHUB_PERSONAL_ACCESS_TOKEN` environment variable, which is mapped to `GITHUB_PERSONAL_ACCESS_TOKEN` internally.
 
 #### Databricks MCP Setup
 
@@ -143,7 +174,7 @@ Then reload VS Code (⌘⇧P → "Developer: Reload Window") for the MCP server 
 
 **Note:** These are the same environment variables used for dbt development (see [dbt.md](.github/copilot-docs/dbt.md#environment-setup)).
 
-### 5. Start using
+### 6. Start using
 
 Open **Copilot Chat** (⌘⇧I on macOS) and ask questions about the codebase. The AI agent has context about:
 - ETL job structure and patterns

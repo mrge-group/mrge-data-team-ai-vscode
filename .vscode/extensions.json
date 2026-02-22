@@ -1,5 +1,8 @@
 {
     "recommendations": [
+        "GitHub.copilot",
+        "GitHub.copilot-chat",
+        "innoverio.vscode-dbt-power-user",
         "shd101wyy.markdown-preview-enhanced"
     ]
 }
