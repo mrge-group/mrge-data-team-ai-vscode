@@ -2,9 +2,9 @@
   "inputs": [
     {
       "id": "github-token",
-      "type": "promptString",
-      "description": "GitHub Personal Access Token",
-      "password": true
+      "type": "environmentVariable",
+      "variableName": "MRGE_GITHUB_PERSONAL_ACCESS_TOKEN",
+      "description": "GitHub Personal Access Token"
     }
   ],
   "servers": {
@@ -20,5 +20,14 @@
         "MRGE_GITHUB_PERSONAL_ACCESS_TOKEN": "${input:github-token}"
       }
     },
+    "databricks": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@squadbase/mcp-databricks"],
+      "env": {
+        "DATABRICKS_HOST": "${env:HOST_NAME}",
+        "DATABRICKS_TOKEN": "${env:DATABRICKS_TOKEN}"
+      }
+    }
   }
 }

@@ -41,3 +41,20 @@ These repositories are defined in `.gitmodules` and should be referenced with Gi
 - This workspace is GitHub-first; use PR terminology (`pull request`) instead of GitLab MR terminology.
 - All tracked repos in `.gitmodules` currently use `main` as default branch.
 - Keep repo references aligned with `.gitmodules` when adding new docs or automation.
+
+## PR/MR Description Files
+
+When creating PR or MR descriptions for the user:
+
+1. **Save to:** `.github/pr-descriptions/PR_DESCRIPTION_<ticket-id>.md` (or `MR_DESCRIPTION_<ticket-id>.md`)
+2. **Folder is git-ignored:** Files in `.github/pr-descriptions/` are automatically excluded from version control
+3. **User workflow:** User copies content to GitHub/GitLab, then deletes the local file
+
+**Example:**
+```
+.github/pr-descriptions/
+├── PR_DESCRIPTION_MDP-940.md
+└── MR_DESCRIPTION_DAT-123.md
+```
+
+See [pull-requests.md](pull-requests.md) for PR/MR description structure and formatting guidelines.

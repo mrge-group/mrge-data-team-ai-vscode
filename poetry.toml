@@ -1,0 +1,9 @@
+[virtualenvs]
+# Create virtual environments inside the project directory
+in-project = true
+
+# Use the system site packages
+system-site-packages = false
+
+# Create new virtual environments using virtualenv
+prefer-active-python = true
