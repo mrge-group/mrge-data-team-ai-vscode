@@ -4,49 +4,78 @@ The dbt projects are located in `data-platform-etl/dags/dbt/` and build transfor
 
 ## ⚠️ Prerequisites for Running dbt Commands
 
-**Before running any dbt command, follow this workflow:**
+**The workspace is pre-configured to use the Poetry virtual environment at `<workspace-root>/.venv/`.**
 
 > **Note:** `<workspace-root>` refers to the `mrge-data-team-ai-vscode/` directory (the top-level workspace folder containing `pyproject.toml`, `data-platform-etl/`, `data-platform-dagster-group/`, etc.).
 
-### 1. Activate the Virtual Environment
+### Option 1: Run from Terminal (Recommended)
+
+**If you've activated the Poetry shell:**
 
 ```bash
-# Navigate to the workspace root (mrge-data-team-ai-vscode/)
-# Replace <workspace-root> with your actual path, for example:
-# cd ~/git_repos/mrge-data-team-ai-vscode
+# One-time: Activate the Poetry-managed virtual environment from workspace root
 cd <workspace-root>
-
-# Activate the Poetry-managed virtual environment
 poetry shell
-```
 
-### 2. Navigate to the dbt Project Directory
-
-```bash
+# Navigate to dbt project
 cd data-platform-etl/dags/dbt/data_platform_dbt/
+
+# Run dbt commands directly
+dbt debug
+dbt run --select my_model --target dev
+dbt test
 ```
 
-### 3. Run dbt Commands
-
-## ⚠️ Always Add a target flag to dbt commands for clarity
-
-## ⚠️ Always Ask Before dbt build, run, snapshot, seed Commands when target is prod
-
+**If you haven't activated the Poetry shell:**
 
 ```bash
-# Now you can run dbt commands directly
-dbt debug
-dbt run --select my_model
-dbt test
+# From workspace root, run with poetry run
+cd <workspace-root>
+poetry run dbt run --select my_model --target dev --project-dir data-platform-etl/dags/dbt/data_platform_dbt --profiles-dir data-platform-etl/dags/dbt/data_platform_dbt
+```
+
+### Option 2: Run via Makefile (from workspace root)
+
+The workspace provides Makefile shortcuts that automatically use the correct virtual environment:
+
+```bash
+# From workspace root
+make dbt-run MODEL=my_model TARGET=dev
+make dbt-test TARGET=dev
+make dbt-compile TARGET=dev
 ```
 
 **Key Points:**
 
-- The workspace uses **Poetry** to manage Python dependencies, including dbt.
-- All dbt pojects are under the base path `data-platform-etl/dags/dbt/`.
-- All dbt commands must run for `data_platform_dbt` under the based path (the main dbt project directory) unless ask directly to run from different dbt project.
-- Once the venv is activated, you can run dbt commands without the `poetry run` prefix
+- The workspace uses **Poetry** to manage Python dependencies, including dbt
+- The workspace Python interpreter is configured to use `.venv/bin/python` by default
+- All dbt projects are under the base path `data-platform-etl/dags/dbt/`
+- All dbt commands must run for `data_platform_dbt` (the main dbt project directory) unless explicitly asked to run from a different dbt project
 - Other dbt projects (DigiDip, Click Valuation) have separate directories documented at the end of this file
+
+## ⚠️ Important dbt Command Rules
+
+### Always Add a `--target` Flag
+
+Always specify the target environment for clarity:
+```bash
+dbt run --select my_model --target dev    # Development
+dbt run --select my_model --target prod   # Production
+```
+
+### Always Ask Before Production Commands
+
+**Before running any mutating dbt command on production (`--target prod`), you MUST ask for confirmation:**
+
+```bash
+# These commands require confirmation when target=prod:
+dbt build --target prod
+dbt run --target prod
+dbt snapshot --target prod
+dbt seed --target prod
+```
+
+This prevents accidental overwrites or data loss in production.
 
 ## dbt Projects Overview
 

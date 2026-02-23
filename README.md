@@ -153,7 +153,7 @@ The GitHub MCP server requires a **Fine-grained Personal Access Token**:
    ```
 6. **Reload VS Code:** (⌘⇧P → "Developer: Reload Window") for the MCP server to connect.
 
-**Important:** The MCP server expects the token in the `MRGE_GITHUB_PERSONAL_ACCESS_TOKEN` environment variable, which is mapped to `GITHUB_PERSONAL_ACCESS_TOKEN` internally.
+**Note:** The MCP configuration directly uses `MRGE_GITHUB_PERSONAL_ACCESS_TOKEN` environment variable.
 
 #### Databricks MCP Setup
 

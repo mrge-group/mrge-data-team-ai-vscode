@@ -24,12 +24,11 @@ This workspace powers production data pipelines and analytics. Incorrect assumpt
 ### Poetry Virtual Environment
 
 - This workspace uses **Poetry** for Python dependency management.
-- Before running dbt or other Python commands, **activate the virtual environment**:
-  ```bash
-  cd <workspace-root>  # Navigate to mrge-data-team-ai-vscode/
-  poetry shell
-  ```
-- See `.github/copilot-docs/dbt.md` for detailed setup instructions.
+- The workspace is **pre-configured** to use the Poetry virtual environment at `<workspace-root>/.venv/bin/python`.
+- When running commands in the terminal:
+  - **Option 1:** Activate the virtual environment once: `cd <workspace-root> && poetry shell`
+  - **Option 2:** Use `poetry run <command>` from the workspace root
+- For dbt commands specifically, see `.github/copilot-docs/dbt.md` for detailed instructions.
 
 ### Evidence-First Workflow
 
@@ -204,10 +203,10 @@ See `.github/copilot-docs/dbt.md` and `.github/copilot-docs/databricks.md` for d
 
 ### dbt Development
 
-**Prerequisites:** Activate the Poetry virtual environment first.
+**The workspace is pre-configured to use the Poetry virtual environment at `<workspace-root>/.venv/bin/python`.**
 
 ```bash
-# From workspace root
+# From workspace root - activate Poetry shell (one-time per terminal session)
 cd <workspace-root>
 poetry shell
 
@@ -217,7 +216,7 @@ cd data-platform-etl/dags/dbt/data_platform_dbt/
 # Run dbt commands
 dbt debug              # Test connection
 dbt compile            # Compile models
-dbt run                # Run models
+dbt run --target dev   # Run models (always specify target)
 dbt test               # Run tests
 dbt docs generate      # Generate documentation
 ```
