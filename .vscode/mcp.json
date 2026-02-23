@@ -1,12 +1,4 @@
 {
-  "inputs": [
-    {
-      "id": "github-token",
-      "type": "environmentVariable",
-      "variableName": "MRGE_GITHUB_PERSONAL_ACCESS_TOKEN",
-      "description": "GitHub Personal Access Token"
-    }
-  ],
   "servers": {
     "atlassian-mcp-server": {
       "url": "https://mcp.atlassian.com/v1/mcp",
@@ -17,7 +9,7 @@
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-github"],
       "env": {
-        "GITHUB_PERSONAL_ACCESS_TOKEN": "${input:github-token}"
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${env:MRGE_GITHUB_PERSONAL_ACCESS_TOKEN}"
       }
     },
     "databricks": {

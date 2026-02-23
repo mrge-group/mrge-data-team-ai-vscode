@@ -24,7 +24,7 @@ The GitHub MCP server requires a **Fine-grained Personal Access Token**:
 5. **Reload shell:** `exec $SHELL`
 6. **Reload VS Code:** (⌘⇧P → "Developer: Reload Window") for the MCP server to connect
 
-**Note:** The environment variable `MRGE_GITHUB_PERSONAL_ACCESS_TOKEN` is mapped to `GITHUB_PERSONAL_ACCESS_TOKEN` in the MCP configuration.
+**Note:** The MCP configuration directly uses the `MRGE_GITHUB_PERSONAL_ACCESS_TOKEN` environment variable (mapped internally to `GITHUB_PERSONAL_ACCESS_TOKEN` for the MCP server).
 
 ## Repositories in This Workspace
 

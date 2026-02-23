@@ -12,7 +12,14 @@
 
 ## Pull latest changes for all submodules (tracks their configured branches)
 update:
-	git submodule update --remote --merge
+	@git submodule foreach --quiet ' \
+		branch=$$(git config -f "$$toplevel/.gitmodules" submodule.$$name.branch || echo master); \
+		echo "==> $$name: fetching origin/$$branch"; \
+		git fetch origin "$$branch" --quiet && \
+		git checkout "$$branch" --quiet 2>/dev/null || git checkout -b "$$branch" "origin/$$branch" --quiet && \
+		git reset --hard "origin/$$branch" --quiet && \
+		echo "    $$name: updated to $$(git rev-parse --short HEAD)" \
+	'
 
 ## Clone workspace with all submodules (for fresh setup)
 clone:
