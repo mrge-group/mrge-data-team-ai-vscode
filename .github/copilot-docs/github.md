@@ -38,6 +38,46 @@ These repositories are defined in `.gitmodules` and should be referenced with Gi
 | `data-platform-infra` | `mrge-group/data-platform-infra` | `main` |
 | `databricks-assets` | `mrge-group/databricks-assets` | `main` |
 
+## Branch Protection Rules
+
+**⚠️ CRITICAL: Never commit directly to `main`**
+
+All repositories enforce branch protection on the `main` branch. Direct pushes to `main` are **blocked** by repository rules.
+
+**Required Workflow:**
+
+1. **Always create a new branch** for any changes:
+   ```bash
+   git checkout -b feat/your-feature-name
+   # or: chore/..., fix/..., docs/...
+   ```
+
+2. **Make changes and commit** to your feature branch:
+   ```bash
+   git add .
+   git commit -m "descriptive commit message"
+   ```
+
+3. **Push to remote:**
+   ```bash
+   git push -u origin feat/your-feature-name
+   ```
+
+4. **Create a Pull Request** to merge into `main`
+
+**Attempting to push directly to `main` will fail with:**
+```
+remote: error: GH013: Repository rule violations found for refs/heads/main.
+remote: - Changes must be made through a pull request.
+```
+
+**Branch naming conventions:**
+- `feat/*` - New features
+- `fix/*` - Bug fixes
+- `chore/*` - Maintenance tasks (deps, configs, etc.)
+- `docs/*` - Documentation updates
+- `refactor/*` - Code refactoring
+
 ## Common Operations
 
 ### Pull Requests

@@ -317,9 +317,18 @@ Submodules:
 
 ## Contributing
 
+**⚠️ Branch Protection:** All repositories enforce branch protection on `main`. Direct pushes to `main` are **blocked**.
+
 To update AI instructions or workspace config:
 
-1. Create a branch: `git checkout -b update-instructions`
+1. **Create a feature branch:** `git checkout -b feat/update-instructions`
 2. Edit files in `.github/` or `.vscode/`
-3. Commit, push, and create an MR
-4. After merge, teammates run `git pull` to get the updates
+3. Commit and push: `git push -u origin feat/update-instructions`
+4. **Create a Pull Request** to merge into `main`
+5. After merge, teammates run `git pull` to get the updates
+
+**Branch naming conventions:**
+- `feat/*` - New features
+- `fix/*` - Bug fixes
+- `chore/*` - Maintenance (dependencies, configs, submodule updates)
+- `docs/*` - Documentation updates
