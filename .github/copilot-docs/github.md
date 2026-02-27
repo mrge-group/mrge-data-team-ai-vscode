@@ -46,24 +46,29 @@ All repositories enforce branch protection on the `main` branch. Direct pushes t
 
 **Required Workflow:**
 
-1. **Always create a new branch** for any changes:
+1. **Pull latest changes from all repositories** (workspace root and submodules):
+   ```bash
+   make update
+   ```
+
+2. **Create a new branch** for your changes:
    ```bash
    git checkout -b feat/your-feature-name
    # or: chore/..., fix/..., docs/...
    ```
 
-2. **Make changes and commit** to your feature branch:
+3. **Make changes and commit** to your feature branch:
    ```bash
    git add .
    git commit -m "descriptive commit message"
    ```
 
-3. **Push to remote:**
+4. **Push to remote:**
    ```bash
    git push -u origin feat/your-feature-name
    ```
 
-4. **Create a Pull Request** to merge into `main`
+5. **Create a Pull Request** to merge into `main`
 
 **Attempting to push directly to `main` will fail with:**
 ```

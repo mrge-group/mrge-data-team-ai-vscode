@@ -36,6 +36,27 @@ This workspace powers production data pipelines and analytics. Incorrect assumpt
 - For data issues: prefer **Databricks inspection** over assumptions about contents.
 - For dbt models: **check the compiled SQL** (`dbt compile`) before making changes.
 
+### Development Workflow
+
+**⚠️ ALWAYS follow this order before making any code changes:**
+
+1. **Update all repositories first** (workspace root and submodules):
+   ```bash
+   make update
+   ```
+
+2. **Create a dedicated branch** for the work:
+   ```bash
+   git checkout -b feat/your-feature-name
+   # or: chore/..., fix/..., docs/...
+   ```
+
+3. **Make changes** to files
+
+4. **Commit, push, and create PR** (see `.github/copilot-docs/github.md` for details)
+
+**Never commit directly to `main`.** All repositories enforce branch protection. See `.github/copilot-docs/github.md` for complete workflow.
+
 ### Updating These Files
 
 You may update instruction files when useful information emerges during a session, but only if:
