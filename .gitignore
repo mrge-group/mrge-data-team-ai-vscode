@@ -48,6 +48,15 @@ node_modules/
 # Docker
 *.log
 
+# dbt
+dbt_packages/
+dbt_internal_packages/
+target/
+dbt_modules/
+logs/
+*.manifest.json
+*.catalog.json
+
 # Jupyter
 .ipynb_checkpoints/
 
