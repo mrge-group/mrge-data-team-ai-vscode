@@ -20,6 +20,17 @@
         "DATABRICKS_HOST": "${env:HOST_NAME}",
         "DATABRICKS_TOKEN": "${env:DATABRICKS_TOKEN}"
       }
+    },
+    "tableau": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@tableau/mcp-server@latest"],
+      "env": {
+        "SERVER": "https://dub01.online.tableau.com",
+        "SITE_NAME": "mrge",
+        "PAT_NAME": "${env:MRGE_TABLEAU_PAT_NAME}",
+        "PAT_VALUE": "${env:MRGE_TABLEAU_PAT_VALUE}"
+      }
     }
   }
 }

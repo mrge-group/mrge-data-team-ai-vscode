@@ -3,5 +3,22 @@
     "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
     "python.analysis.extraPaths": [
         "${workspaceFolder}/.venv/lib/python3.11/site-packages"
-    ]
+    ],
+    "files.associations": {
+        "**/dags/dbt/**/*.sql": "jinja-sql",
+        "**/data_platform_dbt/**/*.sql": "jinja-sql"
+    },
+    "outline.showFiles": true,
+    "outline.showClasses": true,
+    "outline.showFunctions": true,
+    "outline.showVariables": true,
+    "outline.icons": true,
+    "breadcrumbs.enabled": true,
+    "breadcrumbs.symbolPath": "on",
+    "dbt.dbtProjectPath": [
+        "${workspaceFolder}/data-platform-etl/dags/dbt/data_platform_dbt",
+        "${workspaceFolder}/data-platform-dagster-group/data_platform_dbt"
+    ],
+    "dbt.enableDbtPowerUserFeatures": true,
+    "dbt.queryLimit": 500
 }
