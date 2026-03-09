@@ -2,6 +2,7 @@
     "recommendations": [
         "GitHub.copilot",
         "GitHub.copilot-chat",
+        "dbtlabs.vscode-dbt",
         "innoverio.vscode-dbt-power-user",
         "shd101wyy.markdown-preview-enhanced"
     ]

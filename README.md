@@ -113,10 +113,20 @@ When VS Code opens, install these extensions if you don't have them already:
 
 - **GitHub Copilot** (`GitHub.copilot`)
 - **GitHub Copilot Chat** (`GitHub.copilot-chat`)
+- **dbt** (`dbtlabs.vscode-dbt`) - Official dbt extension for syntax highlighting and IntelliSense
 - **dbt Power User** (`innoverio.vscode-dbt-power-user`) - dbt modeling, lineage, and documentation
 - **Markdown Preview Enhanced** (`shd101wyy.markdown-preview-enhanced`) - Enhanced markdown preview
 
 VS Code will automatically prompt you to install these when you open the workspace.
+
+**VS Code Configuration:**
+
+The workspace includes these pre-configured settings in `.vscode/settings.json`:
+
+- **Autosave enabled:** Files save automatically 1 second after you stop typing
+- **dbt syntax highlighting:** All `.sql` files in dbt projects use `jinja-sql` syntax
+- **Python environment:** Points to the Poetry virtual environment at `.venv/bin/python`
+- **dbt project paths:** Pre-configured for both `data-platform-etl` and `data-platform-dagster-group` dbt projects
 
 ### 5. MCP servers (auto-configured)
 
