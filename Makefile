@@ -10,8 +10,10 @@
 # Git Submodule Management
 # ============================================================================
 
-## Pull latest changes for all submodules (tracks their configured branches)
+## Pull latest changes for main repo and all submodules (tracks their configured branches)
 update:
+	@echo "==> workspace: pulling latest"
+	@git pull --quiet
 	@git submodule foreach --quiet ' \
 		branch=$$(git config -f "$$toplevel/.gitmodules" submodule.$$name.branch || echo master); \
 		echo "==> $$name: fetching origin/$$branch"; \
