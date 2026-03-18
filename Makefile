@@ -10,7 +10,7 @@
 # Git Submodule Management
 # ============================================================================
 
-## Pull latest changes for main repo and all submodules (tracks their configured branches)
+## Pull latest changes for the workspace repo (current branch) and all submodules (tracks their configured branches)
 update:
 	@echo "==> workspace: pulling latest"
 	@git pull --ff-only --quiet
