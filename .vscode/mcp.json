@@ -18,7 +18,8 @@
       "args": ["-y", "@squadbase/mcp-databricks"],
       "env": {
         "DATABRICKS_HOST": "${env:HOST_NAME}",
-        "DATABRICKS_TOKEN": "${env:DATABRICKS_TOKEN}"
+        "DATABRICKS_TOKEN": "${env:DATABRICKS_TOKEN}",
+        "DATABRICKS_HTTP_PATH": "${env:HTTP_PATH}"
       }
     },
     "tableau": {
