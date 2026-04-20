@@ -15,6 +15,11 @@ This workspace powers production data pipelines and analytics. Incorrect assumpt
 
 - **Avoid HEREDOCs as much as possible. Prefer short commands; if multi-line input is needed, write to a temporary file and delete it afterwards.**
 
+### Temporary Files
+
+- **All temporary scripts and files must be created under the `tmp/` folder** at the workspace root (`<workspace-root>/tmp/`). Never create temp files in the project source directories.
+- **Clean up temp files after use.** When the Jira ticket being worked on is closed (i.e., after posting the closing comment), delete all temporary files created during that task from `tmp/`.
+
 ### Safety: Read-only by Default
 
 - Default to **read-only** actions when interacting with external systems (AWS, databases, Git, CI/CD, etc.).

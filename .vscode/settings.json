@@ -6,6 +6,16 @@
     "python.analysis.extraPaths": [
         "${workspaceFolder}/.venv/lib/python3.11/site-packages"
     ],
+    "terminal.integrated.cwd": "${workspaceFolder}",
+    "terminal.integrated.env.osx": {
+        "VIRTUAL_ENV": "${workspaceFolder}/.venv",
+        "PATH": "${workspaceFolder}/.venv/bin:${env:PATH}"
+    },
+    "terminal.integrated.shellArgs.osx": [
+        "-l",
+        "-c",
+        "source ${workspaceFolder}/.venv/bin/activate && exec zsh"
+    ],
     "files.associations": {
         "**/dags/dbt/**/*.sql": "jinja-sql",
         "**/data_platform_dbt/**/*.sql": "jinja-sql"
