@@ -56,6 +56,7 @@ dbt_modules/
 logs/
 *.manifest.json
 *.catalog.json
+temp/
 
 # Jupyter
 .ipynb_checkpoints/
