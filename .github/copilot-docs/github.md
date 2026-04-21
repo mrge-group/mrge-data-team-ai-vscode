@@ -63,6 +63,8 @@ All repositories enforce branch protection on the `main` branch. Direct pushes t
    git commit -m "descriptive commit message"
    ```
 
+   **⚠️ Submodule rule:** When committing to the **workspace root repo** (`mrge-data-team-ai-vscode`), **never include submodule pointer changes** (`data-platform-etl`, `data-platform`, `data-platform-infra`, `data-platform-dagster-group`, `bi-airflow-dags`). Only stage workspace-level files (`.gitignore`, `.vscode/`, `.github/`, `pyproject.toml`, etc.). Submodule repos have their own branches and PRs.
+
 4. **Push to remote:**
    ```bash
    git push -u origin feat/your-feature-name
