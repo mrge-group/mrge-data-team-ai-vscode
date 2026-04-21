@@ -57,6 +57,7 @@ logs/
 *.manifest.json
 *.catalog.json
 temp/
+scripts/
 
 # Jupyter
 .ipynb_checkpoints/
