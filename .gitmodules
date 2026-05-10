@@ -2,19 +2,24 @@
 	path = data-platform-etl
 	url = git@github.com:mrge-group/data-platform-etl.git
 	branch = main
+	ignore = all
 [submodule "data-platform"]
 	path = data-platform
 	url = git@github.com:mrge-group/data-platform.git
 	branch = main
+	ignore = all
 [submodule "data-platform-dagster-group"]
 	path = data-platform-dagster-group
 	url = git@github.com:mrge-group/data-platform-dagster-group.git
 	branch = main
+	ignore = all
 [submodule "data-platform-infra"]
 	path = data-platform-infra
 	url = git@github.com:mrge-group/data-platform-infra.git
 	branch = main
+	ignore = all
 [submodule "bi-airflow-dags"]
 	path = bi-airflow-dags
 	url = git@github.com:mrge-group/bi-airflow-dags.git
 	branch = main
+	ignore = all

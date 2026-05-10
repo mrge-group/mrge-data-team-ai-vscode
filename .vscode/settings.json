@@ -32,5 +32,6 @@
         "${workspaceFolder}/data-platform-dagster-group/data_platform_dbt"
     ],
     "dbt.enableDbtPowerUserFeatures": true,
-    "dbt.queryLimit": 500
+    "dbt.queryLimit": 500,
+    "dbt.lineage.defaultExpansion": 4
 }
