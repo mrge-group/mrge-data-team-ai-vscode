@@ -16,7 +16,7 @@
 
 **Before running any AWS CLI command, confirm which AWS SSO profile to use.**
 
-To avoid re-running long discovery snippets every time, use the repo helper which lists `codility-data` profiles, lets you pick one, and saves your preference locally (gitignored):
+To avoid re-running long discovery snippets every time, use the repo helper which lists `mrge-data` profiles, lets you pick one, and saves your preference locally (gitignored):
 
 ```bash
 source scripts/aws_profile.sh
@@ -78,7 +78,7 @@ aws sso login --profile "<PROFILE_NAME>"
 
 - **Region:** Always pass `--region eu-central-1` (all data infra is in eu-central-1)
 - **Output:** Use `--output json --no-cli-pager` to get structured output without paging
-- **Account:** `589722663725` (codility-data)
+- **Account:** `381491982671` (Mrge-Data-Platform-Prod)
 
 ## AWS CLI Reliability (Throttling + Safe Parsing)
 
@@ -139,82 +139,3 @@ aws s3api list-objects-v2 \
 ```bash
 aws s3 ls s3://<BUCKET>/<PREFIX> --recursive --summarize
 ```
-
-### Key Buckets
-| Bucket | Purpose |
-|---|---|
-| `codility-data-datalake-raw-eu-central-1` | Raw CDC data (EU region) |
-| `codility-data-datalake-raw-us-east-1` | Raw CDC data (US region) |
-| `codility-data-delta-lake-silver-eu-central-1` | Delta Lake tables (domain, curated, business, reporting) |
-| `codility-data-users-output-eu-central-1` | Athena query results |
-
-## Athena Queries
-
-Athena can be run directly via CLI. This is the preferred method for data inspection during investigations.
-
-### Workgroup & Output Location
-
-Use the `primary` workgroup with an explicit S3 output location:
-
-```
-s3://aws-athena-query-results-eu-central-1-589722663725/Unsaved/
-```
-
-### Running a Query (3-step process)
-
-**Step 1: Start query execution**
-```bash
-aws athena start-query-execution \
-  --query-string "<SQL>" \
-  --work-group primary \
-  --result-configuration "OutputLocation=s3://aws-athena-query-results-eu-central-1-589722663725/Unsaved/" \
-  --region eu-central-1 --output json --no-cli-pager
-```
-Returns a `QueryExecutionId`.
-
-**Step 2: Check execution status** (wait a few seconds first)
-```bash
-aws athena get-query-execution \
-  --query-execution-id <QUERY_ID> \
-  --region eu-central-1 --output json --no-cli-pager
-```
-Check `Status.State` — must be `SUCCEEDED` before fetching results. If `RUNNING`, wait and retry.
-
-**Step 3: Get results**
-```bash
-aws athena get-query-results \
-  --query-execution-id <QUERY_ID> \
-  --region eu-central-1 --output json --no-cli-pager
-```
-
-### One-Liner Pattern (for simple queries)
-
-```bash
-QUERY_ID=$(aws athena start-query-execution \
-  --query-string "SELECT COUNT(*) FROM curated_entities.codility_task_submits WHERE submit_date = '2025-01-15'" \
-  --work-group primary \
-  --result-configuration "OutputLocation=s3://aws-athena-query-results-eu-central-1-589722663725/Unsaved/" \
-  --region eu-central-1 --output json --no-cli-pager | jq -r '.QueryExecutionId') \
-&& sleep 5 \
-&& aws athena get-query-results \
-  --query-execution-id "$QUERY_ID" \
-  --region eu-central-1 --output json --no-cli-pager
-```
-
-### Query Result Format
-
-Results come as JSON with `Rows` array. First row is the header, subsequent rows are data:
-```json
-{
-  "ResultSet": {
-    "Rows": [
-      { "Data": [{ "VarCharValue": "column_name" }] },
-      { "Data": [{ "VarCharValue": "value" }] }
-    ]
-  }
-}
-```
-
-### Cost Reminder
-
-Follow the cost guidelines in `athena.md` — always use partition filters, LIMIT, and select only needed columns.

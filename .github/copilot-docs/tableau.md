@@ -76,5 +76,5 @@ This ensures VS Code inherits your shell environment variables. If you launch VS
 
 - **Always use `search-content` or `list-*` tools first** to find the correct datasource/workbook ID before calling `query-datasource` or `get-view-image`.
 - **`query-datasource` requires a VizQL query** — use `get-datasource-metadata` first to understand available fields before constructing a query.
-- The MCP server targets the `codility` site on `dub01.online.tableau.com`. Do not assume content from other sites is accessible.
+- The MCP server targets the `mrge` site on `dub01.online.tableau.com`. Do not assume content from other sites is accessible.
 - Results are scoped to what the PAT owner has permission to see on the site.

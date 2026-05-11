@@ -51,7 +51,7 @@ python --version  # Verify it shows 3.11.14
 ### 1. Clone the workspace
 
 ```bash
-git clone --recurse-submodules git@gitlab.codility.net:data-engineering-team/mrge-data-team-ai-vscode.git
+git clone --recurse-submodules git@github.com:mrge-group/mrge-data-team-ai-vscode.git
 cd mrge-data-team-ai-vscode
 ```
 
@@ -318,11 +318,11 @@ pyenv local 3.11.14
 └── mcp.json                    # MCP server configs (Atlassian, GitHub, Databricks)
 
 Submodules:
-├── de-etl-jobs/                # Main ETL repository
-├── airflow/                    # DAGs & job configs
-├── codility/                   # Monolith source code
-├── solution-similarity/        # Similarity inference API
-└── infra-core/                 # Terraform IaC
+├── data-platform-etl/           # Main ETL repository
+├── data-platform/               # Platform infrastructure & deployment
+├── data-platform-dagster-group/ # Dagster orchestration
+├── data-platform-infra/         # Infrastructure as Code (Terraform)
+└── bi-airflow-dags/             # Legacy BI Airflow DAGs
 ```
 
 ## Contributing

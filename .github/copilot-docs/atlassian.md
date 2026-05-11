@@ -1,6 +1,6 @@
 # Atlassian MCP — Jira + Confluence
 
-**Server:** `atlassian-mcp-server` — provides access to both Jira and Confluence on `codility-jira.atlassian.net`.
+**Server:** `atlassian-mcp-server` — provides access to both Jira and Confluence on `mrge.atlassian.net`.
 
 **Cloud ID:** `c528e912-004e-49f2-b7cc-39492384c8c8` (required for all Atlassian MCP calls).
 
