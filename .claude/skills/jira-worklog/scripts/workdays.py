@@ -13,6 +13,7 @@ like BE, BY, NW). Falls back to the 9 nationwide German public holidays
 computed locally (Easter via the Anonymous Gregorian algorithm).
 """
 import argparse
+import calendar
 import datetime as dt
 import json
 
@@ -36,12 +37,20 @@ def easter(year: int) -> dt.date:
 
 
 def german_holidays(year: int, state: str | None):
+    """Returns (holiday_map, source, warning_or_None)."""
     try:
         import holidays as _hol
 
         hd = _hol.Germany(years=year, subdiv=state) if state else _hol.Germany(years=year)
-        return {d: name for d, name in hd.items()}, f"holidays package (state={state or 'nationwide'})"
+        return {d: name for d, name in hd.items()}, f"holidays package (state={state or 'nationwide'})", None
     except ImportError:
+        warning = (
+            f"--state {state} requested but the 'holidays' package is not installed; "
+            "falling back to NATIONWIDE holidays only — state-specific holidays are MISSED. "
+            "Install it (poetry install / pip install holidays) and re-run."
+            if state
+            else None
+        )
         e = easter(year)
         fallback = {
             dt.date(year, 1, 1): "Neujahr",
@@ -54,7 +63,7 @@ def german_holidays(year: int, state: str | None):
             dt.date(year, 12, 25): "1. Weihnachtstag",
             dt.date(year, 12, 26): "2. Weihnachtstag",
         }
-        return fallback, "built-in fallback (nationwide holidays only)"
+        return fallback, "built-in fallback (nationwide holidays only)", warning
 
 
 def main():
@@ -65,7 +74,13 @@ def main():
     p.add_argument("--state", default=None, help="German state code, e.g. BE, BY, NW (optional)")
     args = p.parse_args()
 
-    hols, source = german_holidays(args.year, args.state)
+    if not 1 <= args.month <= 12:
+        p.error(f"--month must be 1-12, got {args.month}")
+    days_in_month = calendar.monthrange(args.year, args.month)[1]
+    if not 1 <= args.until <= days_in_month:
+        p.error(f"--until must be 1-{days_in_month} for {args.year}-{args.month:02d}, got {args.until}")
+
+    hols, source, warning = german_holidays(args.year, args.state)
     working, excluded = [], []
     for day in range(1, args.until + 1):
         d = dt.date(args.year, args.month, day)
@@ -76,18 +91,16 @@ def main():
             continue
         working.append(d.isoformat())
 
-    print(
-        json.dumps(
-            {
-                "working_days": working,
-                "count": len(working),
-                "total_hours": len(working) * 8,
-                "holidays_excluded": excluded,
-                "holiday_source": source,
-            },
-            indent=2,
-        )
-    )
+    result = {
+        "working_days": working,
+        "count": len(working),
+        "total_hours": len(working) * 8,
+        "holidays_excluded": excluded,
+        "holiday_source": source,
+    }
+    if warning:
+        result["warning"] = warning
+    print(json.dumps(result, indent=2))
 
 
 if __name__ == "__main__":

@@ -214,7 +214,7 @@ Fills your Jira worklogs for the current month: 8 hours per German working day (
 
 - `atlassian-mrge` MCP server authenticated (see above)
 - `gh` CLI authenticated (`gh auth status`) — used to weight hours by your PRs
-- Python 3 — a helper script computes working days and German holidays (per Bundesland)
+- Python 3 — a helper script computes working days and German holidays. Bundesland-specific holidays require the [`holidays`](https://pypi.org/project/holidays/) package (included in the workspace Poetry env — run the script via `poetry run python3 ...`); without it the script falls back to nationwide holidays only and says so in its output
 
 **Usage:** type `/jira-worklog` in Claude Code. The skill then:
 
