@@ -26,6 +26,18 @@ This workspace powers production data pipelines and analytics. Incorrect assumpt
 - If an action is **mutating/destructive** (create/update/delete, writes, submissions, deployments, force-pushes, backfills, etc.), you must stop and ask for confirmation first.
 - The confirmation request must be written in **BOLD LETTERS**.
 
+### dbt Production Safety (STRICT)
+
+- **NEVER run `dbt run`, `dbt build`, or `dbt seed` with `--target prod` without explicit user permission.**
+- This applies to ALL variations: `--full-refresh`, `--select`, single models, multiple models — no exceptions.
+- Before executing any dbt write command against prod, you MUST:
+  1. State the exact command you intend to run
+  2. Ask **"DO YOU CONFIRM RUNNING THIS ON PRODUCTION?"** in bold
+  3. Wait for the user to explicitly say yes/confirm
+- **Safe without permission:** `dbt compile`, `dbt show`, `dbt test`, `dbt ls`, `dbt debug`, `dbt docs generate`
+- **Safe without permission:** `dbt run --target dev` (dev target is always OK)
+- **Requires permission:** Any command that writes/materializes tables on `--target prod`
+
 ### Poetry Virtual Environment
 
 - This workspace uses **Poetry** for Python dependency management.

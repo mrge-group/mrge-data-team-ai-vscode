@@ -34,5 +34,5 @@
     ],
     "dbt.enableDbtPowerUserFeatures": true,
     "dbt.queryLimit": 500,
-    "dbt.lineage.defaultExpansion": 4
+    "dbt.lineage.defaultExpansion": 10
 }
