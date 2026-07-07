@@ -208,6 +208,8 @@ The workspace also ships configuration for **Claude Code** (CLI or VS Code exten
 
 Fills your Jira worklogs for the current month: 8 hours per German working day (Mon–Fri excluding public holidays), spread across your assigned tickets and weighted by your PR activity on GitHub. Lives in `.claude/skills/jira-worklog/`.
 
+> **Also works with GitHub Copilot:** Copilot supports the same [Agent Skills standard](https://github.blog/changelog/2025-12-18-github-copilot-now-supports-agent-skills/) and auto-discovers skills from `.claude/skills/`, so this skill is available in Copilot chat too (type `/skills` in VS Code to verify). **Caveat:** Copilot reaches Jira through the Atlassian server in `.vscode/mcp.json` — not the `atlassian-mrge` server — so the account-separation guard above doesn't apply there. Make sure you authorize Copilot's Atlassian MCP with your **mrge work account**, or the skill could write to the wrong Jira site.
+
 **Prerequisites:**
 
 - `atlassian-mrge` MCP server authenticated (see above)
