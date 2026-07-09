@@ -62,6 +62,9 @@ scripts/
 # ...but Claude Code skill scripts are tracked
 !.claude/skills/**/scripts/
 !.claude/skills/**/scripts/**
+# ...except compiled Python artifacts inside them
+.claude/skills/**/scripts/**/__pycache__/
+.claude/skills/**/scripts/**/*.py[cod]
 
 # Jupyter
 .ipynb_checkpoints/
