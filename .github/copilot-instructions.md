@@ -156,6 +156,8 @@ mrge-data-team-ai-vscode/               # Workspace root
 │   ├── databricks/                     # Databricks Terraform
 │   ├── clickhouse/                     # ClickHouse configs
 │   └── environments/                   # Environment-specific configs
+├── data-platform-bi/                   # Omni BI models & reporting definitions
+│   └── omni/                           # Omni semantic models, topics, views, relationships
 └── tests/                              # Workspace-level tests
 ```
 
@@ -173,6 +175,7 @@ mrge-data-team-ai-vscode/               # Workspace root
 | **Databricks notebooks** | `data-platform-etl/databricks/` |
 | **Infrastructure (Terraform)** | `data-platform-infra/{aws,databricks,clickhouse}/` |
 | **Platform deployment configs** | `data-platform/deployment/{airbyte,dagster,mwaa,redpanda-connect}/` |
+| **Omni BI models** (topics, views, relationships) | `data-platform-bi/omni/mrge-data-lake/` |
 | **ClickHouse migrations** | `data-platform-dagster-group/clickhouse/migrations/` |
 | **Workspace Python dependencies** | `pyproject.toml` (workspace root) |
 

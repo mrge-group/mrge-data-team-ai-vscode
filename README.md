@@ -367,6 +367,7 @@ Submodules:
 ├── data-platform/               # Platform infrastructure & deployment
 ├── data-platform-dagster-group/ # Dagster orchestration
 ├── data-platform-infra/         # Infrastructure as Code (Terraform)
+├── data-platform-bi/            # Omni BI models & reporting definitions
 └── bi-airflow-dags/             # Legacy BI Airflow DAGs
 ```
 
