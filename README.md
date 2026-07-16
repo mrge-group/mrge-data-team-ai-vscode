@@ -194,6 +194,43 @@ Open **Copilot Chat** (⌘⇧I on macOS) and ask questions about the codebase. T
 - Jira/Confluence integration
 - Infrastructure (Terraform, Atlantis)
 
+## Claude Code
+
+The workspace also ships configuration for **Claude Code** (CLI or VS Code extension), separate from the Copilot setup above:
+
+- **`.mcp.json`** — project-scoped MCP servers for Claude Code. Includes `atlassian-mrge` (Jira + Confluence on `mrge.atlassian.net`).
+- **`.claude/settings.json`** — shared permission rules. Blocks the personal claude.ai Atlassian connector (`mcp__claude_ai_Atlassian_Rovo__*`) so Claude can never read from or write to the wrong Jira site from this workspace.
+- **`.claude/skills/`** — custom skills (slash commands), documented below.
+
+**One-time Atlassian authentication:** the `atlassian-mrge` server config is shared via git, but each developer authenticates individually. In an interactive Claude Code session inside this workspace, run `/mcp`, select `atlassian-mrge`, and sign in with your **mrge work Atlassian account** (not a personal one), granting access to `mrge.atlassian.net`. The server name is intentionally distinct so its OAuth token is stored separately from any personal Atlassian login you may have elsewhere.
+
+### Skill: `/jira-worklog` — auto-fill Jira worklogs
+
+Fills your Jira worklogs for the current month: 8 hours per German working day (Mon–Fri excluding public holidays), spread across your assigned tickets and weighted by your PR activity on GitHub. Lives in `.claude/skills/jira-worklog/`.
+
+> **Also works with GitHub Copilot:** Copilot supports the same [Agent Skills standard](https://github.blog/changelog/2025-12-18-github-copilot-now-supports-agent-skills/) and auto-discovers skills from `.claude/skills/`, so this skill is available in Copilot chat too (type `/skills` in VS Code to verify). **Caveat:** Copilot reaches Jira through the Atlassian server in `.vscode/mcp.json` — not the `atlassian-mrge` server — so the account-separation guard above doesn't apply there. Make sure you authorize Copilot's Atlassian MCP with your **mrge work account**, or the skill could write to the wrong Jira site.
+
+**Prerequisites:**
+
+- `atlassian-mrge` MCP server authenticated (see above)
+- `gh` CLI authenticated (`gh auth status`) — used to weight hours by your PRs
+- Python 3 — a helper script computes working days and German holidays. Bundesland-specific holidays require the [`holidays`](https://pypi.org/project/holidays/) package (included in the workspace Poetry env — run the script via `poetry run python3 ...`); without it the script falls back to nationwide holidays only and says so in its output
+
+**Usage:** type `/jira-worklog` in Claude Code. The skill then:
+
+1. Confirms which Jira site it's writing to and computes the month's working days through today (it asks for your Bundesland to get holidays right).
+2. Asks about adjustments the data can't show: vacation/sick days, reduced hours, tickets you worked on but aren't assigned to anymore, etc.
+3. Fetches your assigned tickets that have real activity this month, plus any worklogs already logged.
+4. Distributes the remaining hours across tickets, weighted by PR evidence (count, size, date span), placing blocks within 09:00–19:00 Berlin time.
+5. Presents the complete schedule as a table and **posts nothing until you explicitly approve it**.
+
+**Safety guarantees built into the skill:**
+
+- Only touches tickets **assigned to you**; never other people's tickets.
+- **Gap-fill only:** existing worklogs (manual or from a previous run) are never edited, deleted, or duplicated — reruns only top up missing hours, so running it twice is safe.
+- Total logged time is exactly `working days × 8h`, no overlapping blocks, max 8h per day.
+- Explicit approval gate before any write to Jira.
+
 ## Updating
 
 Pull the latest workspace config and submodule changes:
@@ -315,13 +352,22 @@ pyenv local 3.11.14
     └── pull-requests.md        # PR creation & description guidelines
 
 .vscode/
-└── mcp.json                    # MCP server configs (Atlassian, GitHub, Databricks)
+└── mcp.json                    # MCP server configs for Copilot (Atlassian, GitHub, Databricks)
+
+.mcp.json                       # MCP server configs for Claude Code (atlassian-mrge)
+.claude/
+├── settings.json               # Shared Claude Code permissions (blocks personal Atlassian connector)
+└── skills/
+    └── jira-worklog/           # /jira-worklog skill: auto-fill monthly Jira worklogs
+        ├── SKILL.md            # Skill definition & workflow
+        └── scripts/            # German working-days/holidays helper
 
 Submodules:
 ├── data-platform-etl/           # Main ETL repository
 ├── data-platform/               # Platform infrastructure & deployment
 ├── data-platform-dagster-group/ # Dagster orchestration
 ├── data-platform-infra/         # Infrastructure as Code (Terraform)
+├── data-platform-bi/            # Omni BI models & reporting definitions
 └── bi-airflow-dags/             # Legacy BI Airflow DAGs
 ```
 

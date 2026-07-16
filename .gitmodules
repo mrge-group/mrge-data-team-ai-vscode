@@ -23,3 +23,8 @@
 	url = git@github.com:mrge-group/bi-airflow-dags.git
 	branch = main
 	ignore = all
+[submodule "data-platform-bi"]
+	path = data-platform-bi
+	url = git@github.com:mrge-group/data-platform-bi.git
+	branch = main
+	ignore = all
