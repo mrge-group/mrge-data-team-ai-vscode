@@ -88,26 +88,44 @@ gh search prs --author "@me" --created ">=<YYYY-MM-01>" --json title,createdAt,u
 
 - Allocate only the **gap** from Step 4 across non-frozen tickets, weighted by Step 5.
 - For each working day, the target is `8h − existing hours that day`. Days already at 8h get nothing; days over 8h are flagged but untouched.
-- New blocks go inside 09:00–19:00 and around the existing occupied slots — never overlapping them. Default shape on an empty day: `09:00–13:00` and `14:00–18:00` (1h lunch gap); adjust when a day splits across tickets or has existing entries.
+- New blocks go inside **09:00–24:00** and around the existing occupied slots — never overlapping them. No block may cross midnight into the next day.
 - Existing worklogs without a usable start time (Jira allows date-only logs) still consume that day's hour budget; assume they occupy from 09:00 onward and place new blocks after them.
 - Prefer contiguous blocks: keep one ticket per block, switch tickets at block boundaries, and keep each ticket's hours on days consistent with its PR/activity dates.
-- Minimum block: 30 minutes. Round to 15-minute boundaries.
-- Verify programmatically before presenting: per-day sum (existing + new) = 8h, no overlapping intervals (including against existing blocks), existing total + new total = required total. If any check fails, fix the schedule — do not present a broken one.
+- **Do not lay days out on a uniform grid.** A repeating `09:00–13:00` / `14:00–18:00` shape across every day reads as machine-generated. Vary the number of sessions per day (2–4), their lengths, and their start times, and spread them across the day including the evening.
+- Minimum block: 30 minutes. **All start and end times must fall on `:00` or `:30`** — never quarter-hours.
+- Verify programmatically before presenting: per-day sum (existing + new) = 8h, no overlapping intervals (including against existing blocks), every boundary on `:00`/`:30`, every block within 09:00–24:00, and existing total + new total = required total. If any check fails, fix the schedule — do not present a broken one.
+
+### Step 6b — Demand Category (timesheet tagging)
+
+Every row carries a **Demand Category**. mrge uses exactly three values:
+
+- `Maintenance (OPEX)` — fixing what already exists: prod bugs, failing DAGs/models, data-quality defects, incident response.
+- `Tech Enhancement (CAPEX)` — improving or extending existing assets: refactors, new columns on existing facts, unifying/renaming logic, parity work.
+- `Innovation (CAPEX)` — net-new capability: new integrations, new architecture/design, greenfield pipelines.
+
+The field is `customfield_10227`. It is set at **Initiative level and pushed down to children**, so read it from the ticket (or its parent Epic/Initiative) whenever populated and use that value verbatim.
+
+When it is `null` (common — propagation often hasn't reached MDP tickets), **derive** the category from the ticket's issue type and content using the definitions above, and mark the derived values clearly in the approval table so the user can correct them. Never write to `customfield_10227` — it is an issue-level field and the worklog run must not modify issue fields.
 
 ### Step 7 — Approval table (mandatory)
 
 Present the complete plan as a markdown table:
 
-| Jira ticket | Day | time_from | time_to | Hours | Source |
-|---|---|---|---|---|---|
+| Jira ticket | Topic | Day | time_from | time_to | Hours | Demand Category | Source |
+|---|---|---|---|---|---|---|---|
 
-where `Source` is `existing` (shown for context, will NOT be posted) or `new` (will be posted). Follow with a reconciliation summary: `already logged + new = required total`, per-ticket subtotals, and the list of frozen tickets that were skipped. Then ask for explicit approval to post **only the `new` rows**. Do **not** post if the answer is anything but a clear yes.
+- `Topic` is a short (3–6 word) human-readable label for the ticket, derived from its summary — never just the key. The reader must be able to scan the table without opening Jira.
+- `Demand Category` — see Step 6b. Always present; never omit this column.
+- `Source` is `existing` (shown for context, will NOT be posted) or `new` (will be posted).
+
+Follow with a reconciliation summary: `already logged + new = required total`, per-ticket subtotals, and the list of frozen tickets that were skipped. Then ask for explicit approval to post **only the `new` rows**. Do **not** post if the answer is anything but a clear yes.
 
 ### Step 8 — Post worklogs
 
 For each approved row call `addWorklogToJiraIssue` with:
 
 - `started`: `<day>T<time_from>:00.000+0200` (use the correct Berlin UTC offset for the date — +0200 CEST / +0100 CET),
-- time spent matching the block length (e.g. `3h 30m`).
+- time spent matching the block length (e.g. `3h 30m`),
+- `commentBody`: `Demand Category: <value>` — the row's category from Step 6b. This is the only place the tag is recorded, since `customfield_10227` is issue-level and must not be written.
 
 Post sequentially, track failures, and finish with a summary: rows posted, rows failed (with error), and links to the updated tickets. On partial failure, list exactly which rows still need posting so the run can be resumed without duplicating.
