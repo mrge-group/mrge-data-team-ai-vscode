@@ -11,6 +11,13 @@ This workspace powers production data pipelines and analytics. Incorrect assumpt
 - **Never guess** how code works. Read the source first.
 - **When uncertain, ask** the user for context, or request a Databricks query / specific file path.
 
+### Retired Systems — Do Not Treat as Current
+
+- **ClickHouse, `data-platform-dagster-group` and `bi-airflow-dags` are retired.** Use them only to recover business logic that still needs migrating.
+- **ClickHouse is not part of the technology stack.** Never put it in an architecture document, diagram, or recommendation.
+- The retired code is still checked out and still looks live — real ClickHouse Cloud Terraform, numbered migrations, assets tagged `team: DataPlatform`. **When stating what the platform does today, cite an active repo.** If the only evidence is in a retired repo, say so explicitly.
+- See `.github/copilot-docs/retired-systems.md`.
+
 ### Shell Command Hygiene
 
 - **Avoid HEREDOCs as much as possible. Prefer short commands; if multi-line input is needed, write to a temporary file and delete it afterwards.**
@@ -115,10 +122,11 @@ mrge-data-team-ai-vscode/               # Workspace root
 │       ├── aws-cli.md                  # AWS CLI usage, authentication
 │       ├── github.md                   # GitHub workflows, PRs, repository info
 │       ├── atlassian.md                # Jira + Confluence MCP usage
-│       └── pull-requests.md            # PR creation & description guidelines
+│       ├── pull-requests.md            # PR creation & description guidelines
+│       └── retired-systems.md          # ⚠️ ClickHouse + retired repos: reference only
 ├── pyproject.toml                      # Poetry dependencies (workspace-wide)
 ├── poetry.toml                         # Poetry configuration
-├── bi-airflow-dags/                    # Legacy BI Airflow DAGs
+├── bi-airflow-dags/                    # ⚠️ RETIRED — migration reference only
 │   ├── dags/                           # DAG definitions (by domain: digidip, maxbo, s24, etc.)
 │   ├── utils/                          # Shared utilities
 │   └── pyproject.toml                  # Separate Poetry config
@@ -127,12 +135,12 @@ mrge-data-team-ai-vscode/               # Workspace root
 │   ├── apps-prod/                      # Production apps (Airbyte, Dagster, Redpanda)
 │   ├── deployment/                     # Deployment configs
 │   └── doc/                            # Architecture docs
-├── data-platform-dagster-group/        # Dagster orchestration
+├── data-platform-dagster-group/        # ⚠️ RETIRED — migration reference only
 │   ├── mrge_group/                     # Main Dagster code
 │   │   ├── jobs.py                     # Dagster jobs
 │   │   ├── schedules.py                # Dagster schedules
 │   │   └── ...
-│   ├── clickhouse/                     # ClickHouse migrations
+│   ├── clickhouse/                     # ⚠️ RETIRED
 │   ├── data_platform_dbt/              # dbt project (symlink to data-platform-etl)
 │   └── pyproject.toml                  # Dagster dependencies
 ├── data-platform-etl/                  # **Main ETL repository**
@@ -154,7 +162,7 @@ mrge-data-team-ai-vscode/               # Workspace root
 ├── data-platform-infra/                # Infrastructure as Code
 │   ├── aws/                            # AWS Terraform
 │   ├── databricks/                     # Databricks Terraform
-│   ├── clickhouse/                     # ClickHouse configs
+│   ├── clickhouse/                     # ⚠️ RETIRED
 │   └── environments/                   # Environment-specific configs
 ├── data-platform-bi/                   # Omni BI models & reporting definitions
 │   └── omni/                           # Omni semantic models, topics, views, relationships
@@ -169,14 +177,14 @@ mrge-data-team-ai-vscode/               # Workspace root
 | **dbt configuration** | `data-platform-etl/dags/dbt/data_platform_dbt/dbt_project.yml` |
 | **dbt profiles** (Databricks connection) | `data-platform-etl/dags/dbt/data_platform_dbt/profiles.yml` |
 | **Airflow DAGs** (MWAA) | `data-platform-etl/dags/` |
-| **Legacy BI Airflow DAGs** | `bi-airflow-dags/dags/` (organized by source: dd, mb, s24, yk, etc.) |
-| **Dagster jobs** | `data-platform-dagster-group/mrge_group/jobs.py` |
-| **Dagster schedules** | `data-platform-dagster-group/mrge_group/schedules.py` |
+| **Legacy BI Airflow DAGs** ⚠️ RETIRED | `bi-airflow-dags/dags/` — migration reference only |
+| **Dagster jobs** ⚠️ RETIRED | `data-platform-dagster-group/mrge_group/jobs.py` — migration reference only |
+| **Dagster schedules** ⚠️ RETIRED | `data-platform-dagster-group/mrge_group/schedules.py` — migration reference only |
 | **Databricks notebooks** | `data-platform-etl/databricks/` |
-| **Infrastructure (Terraform)** | `data-platform-infra/{aws,databricks,clickhouse}/` |
+| **Infrastructure (Terraform)** | `data-platform-infra/{aws,databricks}/` — the `clickhouse/` module is ⚠️ RETIRED |
 | **Platform deployment configs** | `data-platform/deployment/{airbyte,dagster,mwaa,redpanda-connect}/` |
 | **Omni BI models** (topics, views, relationships) | `data-platform-bi/omni/mrge-data-lake/` |
-| **ClickHouse migrations** | `data-platform-dagster-group/clickhouse/migrations/` |
+| **ClickHouse migrations** ⚠️ RETIRED | `data-platform-dagster-group/clickhouse/migrations/` — migration reference only |
 | **Workspace Python dependencies** | `pyproject.toml` (workspace root) |
 
 ## Data Architecture (Layered)
@@ -264,7 +272,9 @@ dbt docs generate      # Generate documentation
 
 See `.github/copilot-docs/dbt.md` for complete development workflow.
 
-### Dagster Development
+### Dagster Development ⚠️ RETIRED
+
+`data-platform-dagster-group` is retired. Run it only to read old business logic while migrating it to the active stack.
 
 ```bash
 cd data-platform-dagster-group/
